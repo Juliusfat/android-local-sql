@@ -12,7 +12,7 @@
         android:text="Nom" />
 
     <EditText
-        android:id="@+id/editText"
+        android:id="@+id/editTextNom"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
@@ -25,20 +25,20 @@
         android:text="Prenom" />
 
     <EditText
-        android:id="@+id/editText2"
+        android:id="@+id/ediTextPrenom"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="textPersonName" />
 
     <TextView
-        android:id="@+id/textView5"
+        android:id="@+id/textMail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Mail" />
 
     <EditText
-        android:id="@+id/editText3"
+        android:id="@+id/ediTextEmail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"

@@ -15,6 +15,7 @@ import fr.cp.database.DatabaseHandler;
 
 public class FormActivity extends AppCompatActivity {
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,6 +47,9 @@ public class FormActivity extends AppCompatActivity {
         try {
             db.getWritableDatabase().insert("contacts", null, insertValues);
             Toast.makeText(this,"Insertion OK", Toast.LENGTH_SHORT).show();
+            ((EditText) findViewById(R.id.editTextNom)).setText("");
+            ((EditText) findViewById(R.id.ediTextPrenom)).setText("");
+            ((EditText) findViewById(R.id.ediTextEmail)).setText("");
         }
             catch(SQLiteException ex){
                 Log.e("SQL EXCEPTION", ex.getMessage());

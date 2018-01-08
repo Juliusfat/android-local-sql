@@ -4,6 +4,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import fr.cp.database.DatabaseHandler;
 
 public class FormActivity extends AppCompatActivity {
 
@@ -15,6 +16,8 @@ public class FormActivity extends AppCompatActivity {
 
     public void onValid(View V){
         Button clickButton = (Button) V;
+
+        DatabaseHandler  db = new DatabaseHandler (this);
 
     }
 }

@@ -18,10 +18,11 @@
         app:layout_constraintTop_toTopOf="parent" />
     <Button
         android:id="@+id/buttonAddcontact"
-        android:layout_width="match_parent"
+        android:layout_width="154dp"
         android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:background="#ff1f2f"
         android:text="nouveau contact"
-        android:background="@color/colorPrimary"
         android:onClick="onAddContact"/>
 
 

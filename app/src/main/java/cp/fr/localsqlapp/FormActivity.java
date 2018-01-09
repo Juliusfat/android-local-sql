@@ -40,7 +40,11 @@ public class FormActivity extends AppCompatActivity {
 
         //
         ContentValues insertValues = new ContentValues();
-        //db.getWritableDatabase().insert("contacts", null, insertValues);
+        insertValues.put("name", name);
+        insertValues.put("firstName", firstname);
+        insertValues.put("email", email);
+
+       // db.getWritableDatabase().insert("contacts", null, insertValues);
 
         // insertion des données
 

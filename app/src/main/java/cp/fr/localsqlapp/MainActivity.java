@@ -50,9 +50,9 @@ public class MainActivity extends AppCompatActivity {
 
         while(cursor.moveToNext()){
             Map<String, String> contactCols = new HashMap<>();
-            contactCols.put ("name",cursor.getString(0));
-            contactCols.put ("firstname",cursor.getString(1));
-            contactCols.put ("email", cursor.getString(2));
+            contactCols.put ("name",cursor.getString(2));
+            contactCols.put ("firstName",cursor.getString(1));
+            contactCols.put ("email", cursor.getString(3));
 
             //ajout du map de la liste
 

@@ -32,6 +32,10 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         contactListView = findViewById(R.id.contactlistView);
+        contactListInit();
+    }
+
+    private void contactListInit() {
         contactList = this.getAllcontact();
         ContactArrayAdapter contactAdapter = new ContactArrayAdapter(this,contactList);
         contactListView.setAdapter(contactAdapter);
@@ -51,7 +55,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         DatabaseHandler db = new DatabaseHandler(this) ;
 
         //instancier la requete de selection
-        Cursor cursor = db.getReadableDatabase().rawQuery("SELECT * FROM contacts", null);
+        Cursor cursor = db.getReadableDatabase().rawQuery("SELECT name, first_name, email, id FROM contacts", null);
 
         //instancier la liste qui recevra les données
         List<Map<String,String>> contactList = new ArrayList<>();
@@ -59,9 +63,10 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
         while(cursor.moveToNext()){
             Map<String, String> contactCols = new HashMap<>();
-            contactCols.put ("name",cursor.getString(2));
-            contactCols.put ("firstName",cursor.getString(1));
-            contactCols.put ("email", cursor.getString(3));
+            contactCols.put ("name",cursor.getString(0));
+            contactCols.put ("first_name",cursor.getString(1));
+            contactCols.put ("email", cursor.getString(2));
+            contactCols.put ("id", cursor.getString(3));
 
             //ajout du map de la liste
 
@@ -96,10 +101,32 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.mainMenuOptionDelete:
+                this.deleteSelectedContact();
                 break;
             case R.id.mainMenuOptionEdit:
                 break;
         }
         return true;
+    }
+
+    //Suppression du contact
+    private void deleteSelectedContact() {
+        if (selectedIndex != null) {
+
+            // definition de la requete SQL et des parametres
+            String Sql = "DELETE FROM contacts WHERE id=?";
+            String[] param = {this.selectedPerson.get("id")};
+            DatabaseHandler db = new DatabaseHandler(this);
+            db.getWritableDatabase().execSQL(Sql,param);
+
+            //regenerer la liste des contacts
+            this.contactList = this.getAllcontact();
+            contactListInit();
+
+
+        } else {
+            Toast.makeText(this,"vous devez selectionnez un contact", Toast.LENGTH_SHORT).show();
+        }
+
     }
 }

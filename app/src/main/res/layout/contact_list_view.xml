@@ -10,19 +10,19 @@
         android:orientation="horizontal">
 
         <TextView
-            android:id="@+id/ListtextViewFirstname"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="prenom"/>
-
-        <TextView
             android:id="@+id/ListtextViewName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:textStyle="bold"
             android:text="nom"/>
+
+        <TextView
+            android:id="@+id/ListtextViewFirstName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="prénom"/>
 
     </LinearLayout>
 

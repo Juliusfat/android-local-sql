@@ -44,8 +44,8 @@ public class ContactArrayAdapter extends ArrayAdapter {
         // liaison entre les données et la ligne
         TextView nametextview = view .findViewById((R.id.ListtextViewName));
         nametextview.setText(contactdata.get("name"));
-        TextView firsttextview = view .findViewById((R.id.ListtextViewFirstname));
-        firsttextview.setText(contactdata.get("firstName"));
+        TextView firsttextview = view .findViewById((R.id.ListtextViewFirstName));
+        firsttextview.setText(contactdata.get("first_name"));
         TextView emailtextview = view .findViewById((R.id.ListtextViewEmail));
         emailtextview.setText(contactdata.get("email"));
 

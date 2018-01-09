@@ -1,6 +1,7 @@
 package cp.fr.localsqlapp;
 
 import android.content.ContentValues;
+import android.content.Intent;
 import android.database.sqlite.SQLiteException;
 import android.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -15,11 +16,41 @@ import fr.cp.database.DatabaseHandler;
 
 public class FormActivity extends AppCompatActivity {
 
+    EditText nameEditText;
+    EditText firstnameEditText;
+    EditText emailEditText;
+    String contactId;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_form);
+
+
+           Intent intention = getIntent();
+           String name = intention.getStringExtra("name");
+           String id = intention.getStringExtra("id");
+           String firstname = intention.getStringExtra("first_name");
+           String email= intention.getStringExtra("email");
+
+           this.contactId = id;
+           this.firstnameEditText = findViewById(R.id.ediTextPrenom);
+           this.nameEditText = findViewById(R.id.editTextNom);
+           this.emailEditText = findViewById(R.id.ediTextEmail);
+
+           this.firstnameEditText.setText(firstname);
+           this.nameEditText.setText(name);
+           this.emailEditText.setText(email);
+
+
+
+          /*  String name = ((EditText) findViewById(R.id.editTextNom)).getText().toString();
+            String firstname = ((EditText) findViewById(R.id.ediTextPrenom)).getText().toString();
+            String email = ((EditText) findViewById(R.id.ediTextEmail)).getText().toString();
+           */
+
+
         ActionBar actionBar = getActionBar();
         if(actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);

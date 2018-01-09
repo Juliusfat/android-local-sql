@@ -21,11 +21,11 @@ import fr.cp.database.DatabaseHandler;
 
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
 
-    private Map<String,String> selectedPerson;
+    private Map<String, String> selectedPerson;
     // Intgeger peut etre nul
     private Integer selectedIndex;
     private ListView contactListView;
-    private List<Map<String,String>> contactList;
+    private List<Map<String, String>> contactList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,36 +37,36 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     private void contactListInit() {
         contactList = this.getAllcontact();
-        ContactArrayAdapter contactAdapter = new ContactArrayAdapter(this,contactList);
+        ContactArrayAdapter contactAdapter = new ContactArrayAdapter(this, contactList);
         contactListView.setAdapter(contactAdapter);
         contactListView.setOnItemClickListener(this);
     }
 
     public void onAddContact(View view) {
 
-            Intent FormIntent = new Intent(this, FormActivity.class);
-            startActivity(FormIntent);
+        Intent FormIntent = new Intent(this, FormActivity.class);
+        startActivity(FormIntent);
 
     }
 
-    private List<Map<String,String>> getAllcontact() {
+    private List<Map<String, String>> getAllcontact() {
 
         //instencier le composant à la base de données
-        DatabaseHandler db = new DatabaseHandler(this) ;
+        DatabaseHandler db = new DatabaseHandler(this);
 
         //instancier la requete de selection
         Cursor cursor = db.getReadableDatabase().rawQuery("SELECT name, first_name, email, id FROM contacts", null);
 
         //instancier la liste qui recevra les données
-        List<Map<String,String>> contactList = new ArrayList<>();
+        List<Map<String, String>> contactList = new ArrayList<>();
 
 
-        while(cursor.moveToNext()){
+        while (cursor.moveToNext()) {
             Map<String, String> contactCols = new HashMap<>();
-            contactCols.put ("name",cursor.getString(0));
-            contactCols.put ("first_name",cursor.getString(1));
-            contactCols.put ("email", cursor.getString(2));
-            contactCols.put ("id", cursor.getString(3));
+            contactCols.put("name", cursor.getString(0));
+            contactCols.put("first_name", cursor.getString(1));
+            contactCols.put("email", cursor.getString(2));
+            contactCols.put("id", cursor.getString(3));
 
             //ajout du map de la liste
 
@@ -82,8 +82,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
         this.selectedIndex = position;
-        this.selectedPerson=this.contactList.get(position);
-        Toast.makeText(this, "ligne trouvée :"+ selectedPerson.get("name"),Toast.LENGTH_LONG).show();
+        this.selectedPerson = this.contactList.get(position);
+        Toast.makeText(this, "ligne trouvée :" + selectedPerson.get("name"), Toast.LENGTH_LONG).show();
 
 
     }
@@ -92,11 +92,12 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     public boolean onCreateOptionsMenu(Menu menu) {
         //ajout des entrees du fichier main_options_menu
         //au menu contextuel de l'activité
-        getMenuInflater().inflate(R.menu.main_options_menu,menu);
+        getMenuInflater().inflate(R.menu.main_options_menu, menu);
 
         return true;
 
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -104,10 +105,26 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 this.deleteSelectedContact();
                 break;
             case R.id.mainMenuOptionEdit:
+                this.modifySelectedContact();
                 break;
         }
         return true;
     }
+
+    private void modifySelectedContact() {
+        if (selectedIndex != null) {
+
+            Intent FormIntent = new Intent(this, FormActivity.class);
+            FormIntent.putExtra("first_name", this.selectedPerson.get("first_name"));
+            FormIntent.putExtra("id", this.selectedPerson.get("id"));
+            FormIntent.putExtra("name", this.selectedPerson.get("name"));
+            FormIntent.putExtra("email", this.selectedPerson.get("email"));
+            startActivityForResult(FormIntent, 1);
+
+        } else
+            Toast.makeText(this, "vous devez selectionnez un contact", Toast.LENGTH_SHORT).show();
+    }
+
 
     //Suppression du contact
     private void deleteSelectedContact() {
@@ -117,8 +134,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             String Sql = "DELETE FROM contacts WHERE id=?";
             String[] param = {this.selectedPerson.get("id")};
             DatabaseHandler db = new DatabaseHandler(this);
-            db.getWritableDatabase().execSQL(Sql,param);
-            Toast.makeText(this,"suppression ok", Toast.LENGTH_SHORT).show();
+            db.getWritableDatabase().execSQL(Sql, param);
+            Toast.makeText(this, "suppression ok", Toast.LENGTH_SHORT).show();
 
             //regenerer la liste des contacts
             this.contactList = this.getAllcontact();
@@ -126,8 +143,10 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
 
         } else {
-            Toast.makeText(this,"vous devez selectionnez un contact", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "vous devez selectionnez un contact", Toast.LENGTH_SHORT).show();
         }
 
     }
 }
+
+

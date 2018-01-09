@@ -118,10 +118,11 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             String[] param = {this.selectedPerson.get("id")};
             DatabaseHandler db = new DatabaseHandler(this);
             db.getWritableDatabase().execSQL(Sql,param);
+            Toast.makeText(this,"suppression ok", Toast.LENGTH_SHORT).show();
 
             //regenerer la liste des contacts
             this.contactList = this.getAllcontact();
-            contactListInit();
+            this.contactListInit();
 
 
         } else {

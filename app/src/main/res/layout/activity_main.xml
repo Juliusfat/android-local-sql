@@ -24,6 +24,12 @@
         android:background="#1fc7ff"
         android:text="nouveau contact"
         android:onClick="onAddContact"/>
+    <ListView
+        android:id="@+id/contactlistView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    </ListView>
 
 
 </LinearLayout>

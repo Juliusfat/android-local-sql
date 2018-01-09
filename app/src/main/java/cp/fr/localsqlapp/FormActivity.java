@@ -34,11 +34,12 @@ public class FormActivity extends AppCompatActivity {
            String firstname = intention.getStringExtra("first_name");
            String email= intention.getStringExtra("email");
 
-           this.contactId = id;
+
            this.firstnameEditText = findViewById(R.id.ediTextPrenom);
            this.nameEditText = findViewById(R.id.editTextNom);
            this.emailEditText = findViewById(R.id.ediTextEmail);
 
+           this.contactId = id;
            this.firstnameEditText.setText(firstname);
            this.nameEditText.setText(name);
            this.emailEditText.setText(email);
@@ -57,19 +58,19 @@ public class FormActivity extends AppCompatActivity {
         }
     }
 
-    public void onValid(View V){
+    public void onValid(View V) {
         Button clickButton = (Button) V;
 
         // récupération de la saisie de l'utilisateur
 
-        String name = ((EditText) findViewById(R.id.editTextNom)).getText().toString();
-        String firstname = ((EditText) findViewById(R.id.ediTextPrenom)).getText().toString();
-        String email = ((EditText) findViewById(R.id.ediTextEmail)).getText().toString();
+        String name = this.nameEditText.getText().toString();
+        String firstname = this.firstnameEditText.getText().toString();
+        String email = this.emailEditText.getText().toString();
 
         //Instanciation de connexion à la base de données
-        DatabaseHandler  db = new DatabaseHandler (this);
+        DatabaseHandler db = new DatabaseHandler(this);
 
-        //
+        // initialisation des valeurs
         ContentValues insertValues = new ContentValues();
         insertValues.put("name", name);
         insertValues.put("first_name", firstname);
@@ -77,19 +78,29 @@ public class FormActivity extends AppCompatActivity {
 
         //db.getWritableDatabase().insert("contacts", null, insertValues);
 
-        // insertion des données
 
-        try {
-            db.getWritableDatabase().insert("contacts", null, insertValues);
-            Toast.makeText(this,"Insertion OK", Toast.LENGTH_SHORT).show();
-            ((EditText) findViewById(R.id.editTextNom)).setText("");
-            ((EditText) findViewById(R.id.ediTextPrenom)).setText("");
-            ((EditText) findViewById(R.id.ediTextEmail)).setText("");
-        }
-            catch(SQLiteException ex){
+
+            try {
+                if (this.contactId != null) {
+
+                    //mise à jour de la base de données
+                    String[] params = {contactId};
+                    db.getWritableDatabase().update("contacts",insertValues,"id=?",params);
+                    setResult(RESULT_OK);
+                    finish();
+                }else {
+                    // insertion d'un nouvel enregistrement
+                    db.getWritableDatabase().insert("contacts", null, insertValues);
+                    Toast.makeText(this, "Insertion OK", Toast.LENGTH_SHORT).show();
+                    ((EditText) findViewById(R.id.editTextNom)).setText("");
+                    ((EditText) findViewById(R.id.ediTextPrenom)).setText("");
+                    ((EditText) findViewById(R.id.ediTextEmail)).setText("");
+                }
+            } catch (SQLiteException ex) {
                 Log.e("SQL EXCEPTION", ex.getMessage());
             }
 
         }
     }
+
 

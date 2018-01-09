@@ -125,6 +125,13 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             Toast.makeText(this, "vous devez selectionnez un contact", Toast.LENGTH_SHORT).show();
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == 1 && resultCode == RESULT_OK) {
+            Toast.makeText(this,"Mise a jour OK",Toast.LENGTH_SHORT);
+            this.contactListInit();
+        }
+    }
 
     //Suppression du contact
     private void deleteSelectedContact() {

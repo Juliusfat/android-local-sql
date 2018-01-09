@@ -25,8 +25,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         contactListView = findViewById(R.id.contactlistView);
         contactList = this.getAllcontact();
-        ContactArrayAdapter contactAdapter = new ContactArrayAdapter(this.contactList);
-
+        ContactArrayAdapter contactAdapter = new ContactArrayAdapter(this,contactList);
+        contactListView.setAdapter(contactAdapter);
     }
 
     public void onAddContact(View view) {

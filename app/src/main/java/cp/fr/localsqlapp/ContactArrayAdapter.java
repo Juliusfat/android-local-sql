@@ -25,8 +25,8 @@ public class ContactArrayAdapter extends ArrayAdapter {
     private LayoutInflater inflater;
 
 
-    public ContactArrayAdapter(@NonNull List<Map<String, String>> data) {
-        super(context, resource, data);
+    public ContactArrayAdapter(@NonNull Context context, @NonNull List<Map<String, String>> data) {
+        super(context, 0, data);
         // création du constructeur
         this.data = data;
         this.resource =  resource;
@@ -45,7 +45,7 @@ public class ContactArrayAdapter extends ArrayAdapter {
         TextView nametextview = view .findViewById((R.id.ListtextViewName));
         nametextview.setText(contactdata.get("name"));
         TextView firsttextview = view .findViewById((R.id.ListtextViewFirstname));
-        firsttextview.setText(contactdata.get("fisrtname"));
+        firsttextview.setText(contactdata.get("firstname"));
         TextView emailtextview = view .findViewById((R.id.ListtextViewEmail));
         emailtextview.setText(contactdata.get("email"));
 

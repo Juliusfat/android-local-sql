@@ -5,17 +5,23 @@ import android.database.Cursor;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.jar.Attributes;
 
 import fr.cp.database.DatabaseHandler;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
 
+    private Map<String,String> selectedPerson;
+    // Intgeger peut etre nul
+    private Integer selectedIndex;
     private ListView contactListView;
     private List<Map<String,String>> contactList;
 
@@ -27,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
         contactList = this.getAllcontact();
         ContactArrayAdapter contactAdapter = new ContactArrayAdapter(this,contactList);
         contactListView.setAdapter(contactAdapter);
+        contactListView.setOnItemClickListener(this);
     }
 
     public void onAddContact(View view) {
@@ -63,4 +70,16 @@ public class MainActivity extends AppCompatActivity {
 
         return contactList;
     }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+        this.selectedIndex = position;
+        this.selectedPerson=this.contactList.get(position);
+        Toast.makeText(this, "ligne trouvée :"+ selectedPerson.get("name"),Toast.LENGTH_LONG).show();
+
+
+    }
+
+
 }

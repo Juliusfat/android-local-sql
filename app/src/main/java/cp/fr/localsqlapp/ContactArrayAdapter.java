@@ -13,6 +13,8 @@ import android.widget.TextView;
 import java.util.List;
 import java.util.Map;
 
+import cp.fr.localsqlapp.model.Contact;
+
 /**
  * Created by Formation on 09/01/2018.
  */
@@ -20,12 +22,12 @@ import java.util.Map;
 public class ContactArrayAdapter extends ArrayAdapter {
     // initialisation des variables
     private Activity context;
-    private List<Map<String,String>> data;
+    private List<Contact> data;
     private int resource;
     private LayoutInflater inflater;
 
 
-    public ContactArrayAdapter(@NonNull Context context, @NonNull List<Map<String, String>> data) {
+    public ContactArrayAdapter(@NonNull Context context, @NonNull List<Contact> data) {
         super(context, 0, data);
         // création du constructeur
         this.data = data;
@@ -40,14 +42,14 @@ public class ContactArrayAdapter extends ArrayAdapter {
         // instenciation de la vue
         View view = this.inflater.inflate(R.layout.contact_list_view,parent,false);
 
-        Map<String,String> contactdata = this.data.get(position);
+        Contact contactdata = this.data.get(position);
         // liaison entre les données et la ligne
         TextView nametextview = view .findViewById((R.id.ListtextViewName));
-        nametextview.setText(contactdata.get("name"));
+        nametextview.setText(contactdata.getName());
         TextView firsttextview = view .findViewById((R.id.ListtextViewFirstName));
-        firsttextview.setText(contactdata.get("first_name"));
+        firsttextview.setText(contactdata.getFirstName());
         TextView emailtextview = view .findViewById((R.id.ListtextViewEmail));
-        emailtextview.setText(contactdata.get("email"));
+        emailtextview.setText(contactdata.getEmail());
 
 
         return view;

@@ -25,18 +25,28 @@ import fr.cp.database.DatabaseHandler;
 
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
 
-    private Map<String, String> selectedPerson;
+    private Contact selectedPerson;
     // Intgeger peut etre nul
     private Integer selectedIndex;
     private ListView contactListView;
-    private List<Map<String, String>> contactList;
+    private List<Contact> contactList;
     private final String LIFE_CYCLE = "Cycle de vie";
+    private DatabaseHandler db;
+    private ContactDAO dao;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i(LIFE_CYCLE, "onCreate");
         setContentView(R.layout.activity_main);
+
+        //instancier gestionnaire de base de données
+
+        this.db = new DatabaseHandler(this);
+
+        //instancier la liste des contacts
+        this.dao = new ContactDAO(this.db);
+
         contactListView = findViewById(R.id.contactlistView);
         contactListInit();
 
@@ -70,7 +80,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     }
 
     private void contactListInit() {
-        contactList = this.getAllcontact();
+        contactList = this.dao.findALL();
         ContactArrayAdapter contactAdapter = new ContactArrayAdapter(this, contactList);
         contactListView.setAdapter(contactAdapter);
         contactListView.setOnItemClickListener(this);
@@ -117,7 +127,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
         this.selectedIndex = position;
         this.selectedPerson = this.contactList.get(position);
-        Toast.makeText(this, "ligne trouvée :" + selectedPerson.get("name"), Toast.LENGTH_LONG).show();
+        Toast.makeText(this, "ligne trouvée :" + selectedPerson.getName(), Toast.LENGTH_LONG).show();
 
 
     }
@@ -149,10 +159,10 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         if (selectedIndex != null) {
 
             Intent FormIntent = new Intent(this, FormActivity.class);
-            FormIntent.putExtra("first_name", this.selectedPerson.get("first_name"));
-            FormIntent.putExtra("id", this.selectedPerson.get("id"));
-            FormIntent.putExtra("name", this.selectedPerson.get("name"));
-            FormIntent.putExtra("email", this.selectedPerson.get("email"));
+            FormIntent.putExtra("first_name", this.selectedPerson.getFirstName());
+            FormIntent.putExtra("id", String.valueOf(this.selectedPerson.getId()));
+            FormIntent.putExtra("name", this.selectedPerson.getName());
+            FormIntent.putExtra("email", this.selectedPerson.getEmail());
             startActivityForResult(FormIntent, 1);
 
         } else
@@ -173,13 +183,14 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
             // definition de la requete SQL et des parametres
             String Sql = "DELETE FROM contacts WHERE id=?";
-            String[] param = {this.selectedPerson.get("id")};
+            String[] param = {String.valueOf(this.selectedPerson.getId())};
             DatabaseHandler db = new DatabaseHandler(this);
             db.getWritableDatabase().execSQL(Sql, param);
             Toast.makeText(this, "suppression ok", Toast.LENGTH_SHORT).show();
 
             //regenerer la liste des contacts
-            this.contactList = this.getAllcontact();
+            //
+            this.contactList = this.dao.findALL();
             this.contactListInit();
 
 
@@ -207,14 +218,15 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         Log.i(LIFE_CYCLE, "onResume");
     }
 
-    /**
-     * Persitance des données avant destruction d'actvité
-     * @param outState
-     */
+
+      //Persitance des données avant destruction d'actvité
+
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        outState.putInt("selectedIndex",this.selectedIndex);
-        super.onSaveInstanceState(outState);
+        if (this.selectedIndex != null) {
+            outState.putInt("selectedIndex", this.selectedIndex);
+            super.onSaveInstanceState(outState);
+        }
     }
 }
 

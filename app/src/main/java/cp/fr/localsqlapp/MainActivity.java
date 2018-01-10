@@ -50,7 +50,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         contactListView = findViewById(R.id.contactlistView);
         contactListInit();
 
-        this.testDAO();
 
         // recupération des données persistées dans le Bundle
 
@@ -65,19 +64,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     }
 
-    private void testDAO() {
-        try {
-            ContactDAO dao = new ContactDAO(new DatabaseHandler(this));
-            Contact contact = dao.findOneByID(1);
-            if (contact.getName() == null) {
-                Log.i("DAO", "contact vide");
-            } else {
-                Log.i("DAO", contact.getName());
-            }
-        } catch (SQLiteException e) {
-            Log.i ("Debug", e.getMessage());
-        }
-    }
+
 
     private void contactListInit() {
         contactList = this.dao.findALL();
@@ -93,34 +80,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     }
 
-    private List<Map<String, String>> getAllcontact() {
 
-        //instencier le composant à la base de données
-        DatabaseHandler db = new DatabaseHandler(this);
-
-        //instancier la requete de selection
-        Cursor cursor = db.getReadableDatabase().rawQuery("SELECT name, first_name, email, id FROM contacts", null);
-
-        //instancier la liste qui recevra les données
-        List<Map<String, String>> contactList = new ArrayList<>();
-
-
-        while (cursor.moveToNext()) {
-            Map<String, String> contactCols = new HashMap<>();
-            contactCols.put("name", cursor.getString(0));
-            contactCols.put("first_name", cursor.getString(1));
-            contactCols.put("email", cursor.getString(2));
-            contactCols.put("id", cursor.getString(3));
-
-            //ajout du map de la liste
-
-            contactList.add(contactCols);
-        }
-
-        //retour de curseur
-
-        return contactList;
-    }
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

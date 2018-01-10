@@ -1,5 +1,6 @@
 package fr.cp.database;
 
+import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteException;
 
@@ -88,9 +89,33 @@ public class ContactDAO {
     public void deleteOneById (Long id) throws SQLiteException{
         String[] params = {id.toString()};
         String Sql = "DELETE FROM contacts WHERE id=?";
-        db.getWritableDatabase().execSQL(Sql, params);
+        this.db.getWritableDatabase().execSQL(Sql, params);
 
 
     }
 
+    public void persist(Contact entity) {
+        if (entity.getId() == null) {
+            this.insert(entity);
+        } else {
+            this.update(entity);
+        }
+    }
+
+    private ContentValues gatContentValuesFromEntity(Contact entity){
+        ContentValues values = new ContentValues();
+        values.put("name", entity.getName());
+        values.put("first_name", entity.getFirstName());
+        values.put("email", entity.getEmail());
+        return values;
+    }
+
+    private void insert (Contact entity) {
+        Long id = this.db.getWritableDatabase().insert("contacts",null,this.gatContentValuesFromEntity(entity));
+        entity.setId(id);
+    }
+
+    private void update (Contact entity) {
+
+    }
 }

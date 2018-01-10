@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -26,13 +27,26 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     private Integer selectedIndex;
     private ListView contactListView;
     private List<Map<String, String>> contactList;
+    private final String LIFE_CYCLE = "Cycle de vie";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.i(LIFE_CYCLE, "onCreate");
         setContentView(R.layout.activity_main);
         contactListView = findViewById(R.id.contactlistView);
         contactListInit();
+
+        // recupération des données persistées dans le Bundle
+
+        if(savedInstanceState!=null) {
+            this.selectedIndex = savedInstanceState.getInt("selectedIndex");
+            if (this.selectedIndex != null) {
+                this.selectedPerson = this.contactList.get(this.selectedIndex);
+                contactListView.setSelection(this.selectedIndex);
+
+            }
+        }
     }
 
     private void contactListInit() {
@@ -153,6 +167,34 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             Toast.makeText(this, "vous devez selectionnez un contact", Toast.LENGTH_SHORT).show();
         }
 
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Log.i(LIFE_CYCLE, "onStart");
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.i(LIFE_CYCLE, "onPause");
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.i(LIFE_CYCLE, "onResume");
+    }
+
+    /**
+     * Persitance des données avant destruction d'actvité
+     * @param outState
+     */
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putInt("selectedIndex",this.selectedIndex);
+        super.onSaveInstanceState(outState);
     }
 }
 

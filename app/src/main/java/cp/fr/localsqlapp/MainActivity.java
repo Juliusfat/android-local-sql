@@ -2,6 +2,7 @@ package cp.fr.localsqlapp;
 
 import android.content.Intent;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteException;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -18,6 +19,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.jar.Attributes;
 
+import cp.fr.localsqlapp.model.Contact;
+import fr.cp.database.ContactDAO;
 import fr.cp.database.DatabaseHandler;
 
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
@@ -37,6 +40,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         contactListView = findViewById(R.id.contactlistView);
         contactListInit();
 
+        this.testDAO();
+
         // recupération des données persistées dans le Bundle
 
         if(savedInstanceState!=null) {
@@ -46,6 +51,21 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 contactListView.setSelection(this.selectedIndex);
 
             }
+        }
+
+    }
+
+    private void testDAO() {
+        try {
+            ContactDAO dao = new ContactDAO(new DatabaseHandler(this));
+            Contact contact = dao.findOneByID(1);
+            if (contact.getName() == null) {
+                Log.i("DAO", "contact vide");
+            } else {
+                Log.i("DAO", contact.getName());
+            }
+        } catch (SQLiteException e) {
+            Log.i ("Debug", e.getMessage());
         }
     }
 

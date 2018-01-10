@@ -59,7 +59,7 @@ public class FormActivity extends AppCompatActivity {
     }
 
     public void onValid(View V) {
-        Button clickButton = (Button) V;
+
 
         // récupération de la saisie de l'utilisateur
 
@@ -86,6 +86,7 @@ public class FormActivity extends AppCompatActivity {
                     //mise à jour de la base de données
                     String[] params = {contactId};
                     db.getWritableDatabase().update("contacts",insertValues,"id=?",params);
+                    Toast.makeText(this, "Modification OK", Toast.LENGTH_SHORT).show();
                     setResult(RESULT_OK);
                     finish();
                 }else {

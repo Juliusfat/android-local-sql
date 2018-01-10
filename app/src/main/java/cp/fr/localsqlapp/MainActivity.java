@@ -138,14 +138,11 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     }
 
     //Suppression du contact
-    private void deleteSelectedContact() {
+    private void deleteSelectedContact() throws SQLiteException{
         if (selectedIndex != null) {
 
             // definition de la requete SQL et des parametres
-            String Sql = "DELETE FROM contacts WHERE id=?";
-            String[] param = {String.valueOf(this.selectedPerson.getId())};
-            DatabaseHandler db = new DatabaseHandler(this);
-            db.getWritableDatabase().execSQL(Sql, param);
+            this.dao.deleteOneById(Long.valueOf(this.selectedIndex));
             Toast.makeText(this, "suppression ok", Toast.LENGTH_SHORT).show();
 
             //regenerer la liste des contacts

@@ -83,4 +83,14 @@ public class ContactDAO {
         return contactList;
     }
 
+    //methode de suppression simple
+
+    public void deleteOneById (Long id) throws SQLiteException{
+        String[] params = {id.toString()};
+        String Sql = "DELETE FROM contacts WHERE id=?";
+        db.getWritableDatabase().execSQL(Sql, params);
+
+
+    }
+
 }

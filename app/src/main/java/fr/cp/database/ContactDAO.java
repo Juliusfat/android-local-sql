@@ -13,7 +13,7 @@ import cp.fr.localsqlapp.model.Contact;
  * Created by Formation on 10/01/2018.
  */
 
-public class ContactDAO {
+public class ContactDAO implements DAOInterface<Contact> {
 
     private DatabaseHandler db;
 
@@ -26,6 +26,7 @@ public class ContactDAO {
      * @param id
      * @return
      */
+    @Override
     public Contact findOneByID(long id) throws SQLiteException {
         String[] param = {String.valueOf(id)};
         String sql = "SELECT id, name, first_name, email FROM contacts WHERE id=?";
@@ -60,6 +61,7 @@ public class ContactDAO {
      * @return
      */
 
+    @Override
     public List<Contact> findALL() throws SQLiteException{
 
         //instancier la liste des contacts
@@ -86,7 +88,8 @@ public class ContactDAO {
 
     //methode de suppression simple
 
-    public void deleteOneById (Long id) throws SQLiteException{
+    @Override
+    public void deleteOneById(Long id) throws SQLiteException{
         String[] params = {id.toString()};
         String Sql = "DELETE FROM contacts WHERE id=?";
         this.db.getWritableDatabase().execSQL(Sql, params);
@@ -94,6 +97,7 @@ public class ContactDAO {
 
     }
 
+    @Override
     public void persist(Contact entity) {
         if (entity.getId() == null) {
             this.insert(entity);
@@ -124,4 +128,6 @@ public class ContactDAO {
                 params
         );
     }
+
+
 }

@@ -59,7 +59,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             this.selectedIndex = savedInstanceState.getInt("selectedIndex");
             if(this.selectedIndex != null){
                 this.selectedPerson = this.contactList.get(this.selectedIndex);
-                contactAdapter.setSelection(this.selectedIndex);
+
+                contactListView.setSelection(this.selectedIndex);
 
                 Log.i(LIFE_CYCLE, "Selection:"+ contactListView.getSelectedItemId());
             }
@@ -187,6 +188,12 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             outState.putInt("selectedIndex", this.selectedIndex);
             super.onSaveInstanceState(outState);
         }
+    }
+
+    public void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+
+        this.selectedIndex= savedInstanceState.getInt("selectedIndex");
     }
 }
 

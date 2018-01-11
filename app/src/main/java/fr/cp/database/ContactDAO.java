@@ -102,7 +102,7 @@ public class ContactDAO {
         }
     }
 
-    private ContentValues gatContentValuesFromEntity(Contact entity){
+    private ContentValues getContentValuesFromEntity(Contact entity){
         ContentValues values = new ContentValues();
         values.put("name", entity.getName());
         values.put("first_name", entity.getFirstName());
@@ -111,11 +111,17 @@ public class ContactDAO {
     }
 
     private void insert (Contact entity) {
-        Long id = this.db.getWritableDatabase().insert("contacts",null,this.gatContentValuesFromEntity(entity));
+        Long id = this.db.getWritableDatabase().insert("contacts",null,this.getContentValuesFromEntity(entity));
         entity.setId(id);
     }
 
-    private void update (Contact entity) {
-
+    private void update(Contact entity){
+        String[] params = {entity.getId().toString()};
+        this.db.getWritableDatabase().update(
+                "contacts",
+                this.getContentValuesFromEntity(entity),
+                "id=?",
+                params
+        );
     }
 }

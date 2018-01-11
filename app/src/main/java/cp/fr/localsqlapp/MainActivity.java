@@ -33,6 +33,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     private final String LIFE_CYCLE = "Cycle de vie";
     private DatabaseHandler db;
     private ContactDAO dao;
+    private ContactArrayAdapter contactAdapter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,17 +53,17 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         contactListInit();
 
 
-        // recupération des données persistées dans le Bundle
-
-        if(savedInstanceState!=null) {
+        //Récupération des données persistées dans le Bundle
+        if(savedInstanceState != null){
+            //Récupération de l'index de sélection de sauvegarde
             this.selectedIndex = savedInstanceState.getInt("selectedIndex");
-            if (this.selectedIndex != null) {
+            if(this.selectedIndex != null){
                 this.selectedPerson = this.contactList.get(this.selectedIndex);
-                contactListView.setSelection(this.selectedIndex);
+                contactAdapter.setSelection(this.selectedIndex);
 
+                Log.i(LIFE_CYCLE, "Selection:"+ contactListView.getSelectedItemId());
             }
         }
-
     }
 
 
@@ -142,7 +144,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         if (selectedIndex != null) {
 
             // definition de la requete SQL et des parametres
-            this.dao.deleteOneById(Long.valueOf(this.selectedIndex));
+            Long id= this.selectedPerson.getId();
+            this.dao.deleteOneById(Long.valueOf(id));
             Toast.makeText(this, "suppression ok", Toast.LENGTH_SHORT).show();
 
             //regenerer la liste des contacts

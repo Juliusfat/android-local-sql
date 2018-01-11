@@ -27,6 +27,7 @@ public class ContactArrayAdapter extends ArrayAdapter {
     private LayoutInflater inflater;
 
 
+
     public ContactArrayAdapter(@NonNull Context context, @NonNull List<Contact> data) {
         super(context, 0, data);
         // création du constructeur
@@ -53,5 +54,8 @@ public class ContactArrayAdapter extends ArrayAdapter {
 
 
         return view;
+    }
+
+    public void setSelection(Integer selectedIndex) {
     }
 }
